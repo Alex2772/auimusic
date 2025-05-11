@@ -4,6 +4,7 @@ Checks: >
   clang-analyzer-*,
   cppcoreguidelines-*,
   modernize-*,
+  -*-macro-to-enum,
   -modernize-use-trailing-return-type,
   -clang-analyzer-optin.core.EnumCastOutOfRange,
   -bugprone-assignment-in-if-condition,

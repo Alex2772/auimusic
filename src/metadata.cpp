@@ -8,8 +8,6 @@
 #include <AUI/Logging/ALogger.h>
 #include <AUI/Image/AImage.h>
 
-static constexpr auto LOG_TAG = "Metadata";
-
 void metadata::populate(Song& song) {
     auto tag = aui::ptr::make_unique_with_deleter(ID3v2_read_tag(song.location.toStdString().c_str()), ID3v2_Tag_free);
     if (!tag) {
