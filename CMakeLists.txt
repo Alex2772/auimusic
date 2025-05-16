@@ -26,9 +26,9 @@ auib_import(dr_libs https://github.com/mackron/dr_libs
             ADD_SUBDIRECTORY
 )
 
-auib_import(id3v2lib https://github.com/larsbs/id3v2lib
-            VERSION 141ffb8
-            ADD_SUBDIRECTORY)
+find_package(ZLIB REQUIRED)
+auib_import(TagLib https://github.com/taglib/taglib#
+            VERSION v2.0.2)
 
 add_library(dr_libs INTERFACE IMPORTED)
 target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
@@ -39,7 +39,7 @@ target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
 aui_executable(${PROJECT_NAME})
 
 # Link required libs
-aui_link(${PROJECT_NAME} PRIVATE aui::core aui::views aui::updater aui::audio dr_libs id3v2lib)
+aui_link(${PROJECT_NAME} PRIVATE aui::core aui::views aui::updater aui::audio dr_libs TagLib::tag)
 
 # Compile assets
 aui_compile_assets(${PROJECT_NAME})
