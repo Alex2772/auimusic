@@ -2,18 +2,29 @@
 // Created by alex2772 on 5/5/25.
 //
 
-#include <dr_mp3.h>
-#include <id3v2lib.h>
+#include <taglib/fileref.h>
+
 #include "metadata.h"
-#include <AUI/Logging/ALogger.h>
 #include <AUI/Image/AImage.h>
 
 void metadata::populate(Song& song) {
-    auto tag = aui::ptr::make_unique_with_deleter(ID3v2_read_tag(song.location.toStdString().c_str()), ID3v2_Tag_free);
-    if (!tag) {
-        return;
-    }
-    if (auto frame = ID3v2_Tag_get_album_cover_frame(tag.get())) {
-        song.thumbnail = AImage::fromBuffer(AByteBufferView(frame->data->data, frame->data->picture_size));
+#if AUI_PLATFORM_WIN
+    TagLib::FileRef f(aui::win32::toWchar(song.location));
+#else
+    TagLib::FileRef f(song.location.toStdString().c_str());
+#endif
+    auto picture = f.complexProperties("PICTURE");
+    for (const auto& map : picture) {
+        for (const auto&[k, v] : map) {
+            if (k == "data") {
+                bool ok = false;
+                auto vector = v.toByteVector(&ok);
+                if (!ok) {
+                    break;
+                }
+
+                song.thumbnail = AImage::fromBuffer(AByteBufferView(vector.data(), vector.size()));
+            }
+        }
     }
 }

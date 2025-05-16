@@ -7,7 +7,7 @@ project(auimusic
 option(BUILD_SHARED_LIBS "Build shared libs" OFF)
 option(AUIB_FORCE_PRECOMPILED "AUI.Boot: force precompiled dependencies" OFF)
 
-set(AUI_VERSION 8824a340603789d2149019f351dc513bf2e22138)
+set(AUI_VERSION 413eb7a7)
 
 # Use AUI.Boot
 file(
@@ -26,9 +26,13 @@ auib_import(dr_libs https://github.com/mackron/dr_libs
             ADD_SUBDIRECTORY
 )
 
-auib_import(id3v2lib https://github.com/larsbs/id3v2lib
-            VERSION 141ffb8
-            ADD_SUBDIRECTORY)
+find_package(ZLIB REQUIRED)
+auib_import(TagLib https://github.com/taglib/taglib
+            VERSION v2.0.2)
+
+if (NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(TagLib::tag INTERFACE TAGLIB_STATIC=1)
+endif()
 
 add_library(dr_libs INTERFACE IMPORTED)
 target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
@@ -39,7 +43,7 @@ target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
 aui_executable(${PROJECT_NAME})
 
 # Link required libs
-aui_link(${PROJECT_NAME} PRIVATE aui::core aui::views aui::updater aui::audio dr_libs id3v2lib)
+aui_link(${PROJECT_NAME} PRIVATE aui::core aui::views aui::updater aui::audio dr_libs TagLib::tag)
 
 # Compile assets
 aui_compile_assets(${PROJECT_NAME})
