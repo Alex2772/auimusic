@@ -7,7 +7,7 @@ project(auimusic
 option(BUILD_SHARED_LIBS "Build shared libs" OFF)
 option(AUIB_FORCE_PRECOMPILED "AUI.Boot: force precompiled dependencies" OFF)
 
-set(AUI_VERSION 8824a340603789d2149019f351dc513bf2e22138)
+set(AUI_VERSION 413eb7a7)
 
 # Use AUI.Boot
 file(
