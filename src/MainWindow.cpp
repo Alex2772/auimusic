@@ -38,7 +38,8 @@ _<AView> MainWindow::playlistView() {
                 ATextAlign::CENTER,
                 FontSize { 14_pt },
               },
-              AText::fromString("Add songs to your music folder.") with_style { ATextAlign::CENTER },
+              AText::fromString("Add songs to your music folder:") with_style { ATextAlign::CENTER },
+              AText::fromString(mState.path) with_style { ATextAlign::CENTER },
               _new<AButton>("Open Music Folder") let {
                       AObject::connect(it->clicked, AObject::GENERIC_OBSERVER, [this] {
                           APlatform::openUrl(mState.path);
@@ -209,6 +210,11 @@ void MainWindow::loadPlaylist() {
     mAsync << async {
         AVector<_<Song>> songs;
         for (const auto& p : lookIn.listDir(AFileListFlags::RECURSIVE | AFileListFlags::REGULAR_FILES)) {
+            if (!p.endsWith(".mp3")) {
+                // we support mp3 only at the moment.
+                // skips desktop.ini on windows.
+                continue;
+            }
             songs << aui::ptr::manage(new Song {
               .location = p,
               .title = p.filenameWithoutExtension(),

@@ -27,8 +27,12 @@ auib_import(dr_libs https://github.com/mackron/dr_libs
 )
 
 find_package(ZLIB REQUIRED)
-auib_import(TagLib https://github.com/taglib/taglib#
+auib_import(TagLib https://github.com/taglib/taglib
             VERSION v2.0.2)
+
+if (NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(TagLib::tag INTERFACE TAGLIB_STATIC=1)
+endif()
 
 add_library(dr_libs INTERFACE IMPORTED)
 target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
