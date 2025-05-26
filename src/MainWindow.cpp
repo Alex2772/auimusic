@@ -30,6 +30,7 @@ static auto timeFormatter(std::chrono::milliseconds position) {
 }
 
 _<AView> MainWindow::playlistView() {
+
     if (mState.songs->empty()) {
         return Centered {
             Vertical {
