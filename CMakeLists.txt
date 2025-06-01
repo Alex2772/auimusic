@@ -1,7 +1,7 @@
 # Standard routine
 cmake_minimum_required(VERSION 3.16)
 project(auimusic
-        VERSION 0.0.10 # CI_PROJECT_VERSION
+        VERSION 0.0.1 # CI_PROJECT_VERSION
     )
 
 option(BUILD_SHARED_LIBS "Build shared libs" OFF)
@@ -53,7 +53,7 @@ aui_enable_tests(${PROJECT_NAME})
 
 # Setup icon, display name, etc
 aui_app(TARGET ${PROJECT_NAME}
-        NAME "AUI App Example"
+        NAME "AUImusic"
         VENDOR "AUI Project"
         ICON "assets/img/icon.svg"
 )
